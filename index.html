@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#050b11">
+    <meta name="description" content="MICROGENESIS is a playable microscopic evolution and survival game.">
+    <link rel="icon" type="image/png" href="/icon.png">
+    <title>MICROGENESIS</title>
+  </head>
+  <body>
+    <div id="viewport" aria-label="Microscopic game world"></div>
+    <main id="interface" data-screen="title">
+      <section id="title-screen" aria-labelledby="game-title">
+        <header class="title-header">
+          <div class="wordmark"><span class="brand-mark" aria-hidden="true"><i></i></span><span>MICROGENESIS</span></div>
+          <nav class="title-nav" aria-label="Game options">
+            <button class="quiet" type="button" data-action="help">Controls</button>
+            <button class="quiet" type="button" data-action="settings">Settings</button>
+          </nav>
+        </header>
+        <div class="cover-shade" aria-hidden="true"></div>
+        <div class="title-content">
+          <p class="eyebrow"><span class="record-dot" aria-hidden="true"></span> Evolution survival</p>
+          <h1 id="game-title" aria-label="MICROGENESIS"><span>MICRO</span><span>GENESIS</span></h1>
+          <p class="title-copy">Life begins with a bond. Feed, take shape, and outlast the organisms evolving around you.</p>
+          <div class="title-actions">
+            <button class="primary" id="continue-culture" type="button" data-action="resume" hidden>Continue culture <span aria-hidden="true">↗</span></button>
+            <button class="primary" id="begin-culture" type="button" data-action="start" disabled>Begin culture <span aria-hidden="true">↗</span></button>
+          </div>
+          <p id="loading-error" role="alert" hidden></p>
+        </div>
+        <div class="specimen-frame" aria-hidden="true">
+          <span class="frame-corner nw"></span><span class="frame-corner ne"></span><span class="frame-corner sw"></span><span class="frame-corner se"></span>
+          <span class="specimen-mode"><i></i> LIVE SPECIMEN</span>
+          <span class="specimen-label"><span></span> Cytoplasm</span>
+          <span class="specimen-scale"><i></i> 25 µm</span>
+        </div>
+        <footer class="title-footer">
+          <span class="field-note"><span class="foot-reticle" aria-hidden="true">⌖</span> In vitro observation</span>
+          <span id="title-record">Best survival <b>—</b></span>
+          <span class="footer-field" id="title-wins" hidden></span>
+        </footer>
+      </section>
+
+      <section id="hud" aria-label="Run telemetry" hidden>
+        <header class="hud-header">
+          <div class="run-status">
+            <span class="brand-mark hud-mark" aria-hidden="true"><i></i></span>
+            <div><p class="eyebrow" id="hud-phase">Phase I</p><p class="run-location" id="hud-location">Nursery</p></div>
+          </div>
+          <div class="hud-clock" title="Survival time"><span class="record-dot" aria-hidden="true"></span><time id="hud-time">00:00</time></div>
+          <button type="button" class="quiet pause-button" data-action="pause" aria-label="Pause game"><span class="pause-icon" aria-hidden="true"></span><span>Pause</span></button>
+        </header>
+        <div class="telemetry">
+          <div class="vitals">
+            <div class="vital energy"><p><span><i></i> Energy</span><b id="hud-energy">—</b></p><div class="meter" id="energy-meter" role="meter" aria-label="Energy" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div></div>
+            <div class="vital integrity"><p><span><i></i> Integrity</span><b id="hud-hp">—</b></p><div class="meter" id="hp-meter" role="meter" aria-label="Integrity" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div></div>
+          </div>
+          <div class="resource-row">
+            <span title="Biomass feeds new branches"><i class="biomass-icon"></i> <b id="hud-biomass">0</b><span class="resource-label">Biomass</span></span>
+            <span title="Catalysts fund mutations"><i class="catalyst-icon"></i> <b id="hud-catalysts">0</b><span class="resource-label">Catalysts</span></span>
+          </div>
+        </div>
+        <aside class="map-wrap" aria-label="Dish position and salinity">
+          <div class="dish-map" title="Position in the culture dish" aria-hidden="true"><div class="map-grid"></div><i id="map-player"></i></div>
+          <p><i aria-hidden="true"></i> SALINITY <b id="hud-threat">0%</b></p>
+        </aside>
+        <div id="crown-health" class="crown-health" hidden><p><span class="record-dot"></span> CROWN COLONY</p><div id="boss-meter" class="meter" role="meter" aria-label="Crown colony integrity" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><i></i></div></div>
+        <div id="crown-pointer" aria-hidden="true" hidden><i></i></div>
+        <div class="objective">
+          <p class="eyebrow">Observation</p>
+          <h2 id="hud-objective"></h2>
+          <p id="hud-tip"></p>
+        </div>
+        <div class="game-footer">
+          <div class="ability-strip" aria-label="Abilities">
+            <div class="ability-slot" id="dash-meter"><kbd>Space</kbd><span>Impulse</span><i></i></div>
+            <div class="ability-slot" id="ability-meter"><kbd>Q</kbd><span>Discharge</span><i></i></div>
+          </div>
+          <button id="evolve-button" class="evolve-button" type="button" data-action="evolve" aria-label="Evolution tree">
+            <span class="evolve-glyph" aria-hidden="true">⌘</span>
+            <span class="evolve-name"><span id="evolve-status">Evolution</span><small id="hud-lineage">Progenitor</small></span>
+            <kbd>Tab</kbd><i id="evolution-meter"></i>
+          </button>
+        </div>
+        <div id="touch-controls" aria-label="Touch controls">
+          <div id="joystick" aria-label="Movement joystick"><span id="joystick-knob"></span></div>
+          <div class="touch-actions">
+            <button type="button" class="touch-action touch-bond" data-touch="bond"><span aria-hidden="true">＋</span> Bond</button>
+            <button type="button" class="touch-action touch-ability" data-touch="ability"><span aria-hidden="true">✧</span> Pulse</button>
+            <button type="button" class="touch-action touch-dash" data-touch="dash"><span aria-hidden="true">»</span> Dash</button>
+            <button type="button" class="touch-action touch-absorb" data-touch="absorb"><span aria-hidden="true">◎</span> Absorb</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="dialogs" hidden>
+        <section id="pause-screen" class="dialog-panel compact" role="dialog" aria-modal="true" aria-labelledby="pause-title" hidden>
+          <p class="eyebrow"><span class="record-dot"></span> Culture suspended</p>
+          <h2 id="pause-title">Paused</h2>
+          <div class="dialog-actions">
+            <button class="primary" type="button" data-action="resume">Resume culture <span aria-hidden="true">↗</span></button>
+            <button class="menu-action" type="button" data-action="settings">Settings <span aria-hidden="true">↗</span></button>
+            <button class="menu-action" type="button" data-action="help">Controls <span aria-hidden="true">↗</span></button>
+            <button class="menu-action" type="button" data-action="title">Save &amp; exit <span aria-hidden="true">↗</span></button>
+          </div>
+        </section>
+
+        <section id="settings-screen" class="dialog-panel compact" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
+          <div class="dialog-heading"><p class="eyebrow">Instrument</p><button type="button" data-action="back" class="quiet" aria-label="Close settings">Close ×</button></div>
+          <h2 id="settings-title">Settings</h2>
+          <div class="form-row"><label for="master-volume">Master volume</label><output id="volume-percent" for="master-volume">50%</output></div>
+          <input id="master-volume" type="range" min="0" max="100" step="1" value="50">
+          <label class="toggle-row" for="audio-muted"><span>Mute audio</span><input id="audio-muted" type="checkbox"></label>
+          <div class="form-row"><label for="graphics-quality">Graphics quality</label><select id="graphics-quality"><option value="auto">Adaptive</option><option value="high">High</option><option value="low">Low</option></select></div>
+          <button type="button" data-action="back" class="menu-action">Back <span aria-hidden="true">↖</span></button>
+        </section>
+
+        <section id="help-screen" class="dialog-panel help-panel" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden>
+          <div class="dialog-heading"><p class="eyebrow">Field guide</p><button type="button" data-action="back" class="quiet" aria-label="Close controls">Close ×</button></div>
+          <h2 id="help-title">Controls</h2>
+          <div class="control-help">
+            <dl class="desktop-guide">
+              <div><dt>Swim / steer</dt><dd><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></dd></div>
+              <div><dt>Aim / absorb</dt><dd><kbd>Mouse</kbd> <kbd>Hold LMB</kbd></dd></div>
+              <div><dt>Bond / grow branch</dt><dd><kbd>E</kbd></dd></div>
+              <div><dt>Impulse / evade</dt><dd><kbd>Space</kbd></dd></div>
+              <div><dt>Discharge</dt><dd><kbd>Q</kbd></dd></div>
+              <div><dt>Evolution tree</dt><dd><kbd>Tab</kbd></dd></div>
+              <div><dt>Zoom / pause</dt><dd><kbd>Wheel</kbd> <kbd>Esc</kbd></dd></div>
+            </dl>
+            <p class="mobile-guide">Steer with the joystick and aim by touching the field. Hold <b>Absorb</b> near nutrients, then use <b>Bond</b> to grow a branch. Tap <b>Dash</b> to evade or <b>Pulse</b> to attack.</p>
+            <div class="guide-notes">
+              <p><i class="energy-icon"></i><span><strong>Energy.</strong> Absorb cyan particles to power impulses and discharges.</span></p>
+              <p><i class="biomass-icon"></i><span><strong>Biomass.</strong> Absorb green particles to build and repair branches.</span></p>
+              <p><i class="catalyst-icon"></i><span><strong>Catalysts.</strong> Collect amber particles to fund mutations.</span></p>
+            </div>
+          </div>
+          <button type="button" data-action="back" class="menu-action">Back <span aria-hidden="true">↖</span></button>
+        </section>
+
+        <section id="evolution-screen" class="dialog-panel evolution-panel" role="dialog" aria-modal="true" aria-labelledby="evolution-title" hidden>
+          <div class="dialog-heading"><p class="eyebrow"><span class="record-dot"></span> Morphogenesis</p><button type="button" data-action="back" class="quiet" aria-label="Close evolution">Close ×</button></div>
+          <h2 id="evolution-title">Evolution tree</h2>
+          <p id="evolution-instruction" class="dialog-copy"></p>
+          <p id="evolution-gate" class="evolution-gate" hidden></p>
+          <div class="lineage-origin" aria-hidden="true"><span>NUCLEUS</span><i></i></div>
+          <div id="mutation-tree" class="mutation-tree"></div>
+          <div class="evolution-foot"><span><i class="catalyst-icon"></i> <b id="evolution-catalysts">0</b> catalysts available</span><button type="button" data-action="back" class="quiet">Return to culture <span aria-hidden="true">↗</span></button></div>
+        </section>
+
+        <section id="result-screen" class="dialog-panel result-panel" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
+          <p class="eyebrow" id="result-kicker">Culture terminated</p>
+          <h2 id="result-title">Specimen lost</h2>
+          <p class="dialog-copy" id="result-description"></p>
+          <dl class="result-stats">
+            <div><dt>Time survived</dt><dd id="result-time">00:00</dd></div>
+            <div><dt>Bonds formed</dt><dd id="result-bonds">0</dd></div>
+            <div><dt>Lineage tier</dt><dd id="result-tier">0</dd></div>
+            <div><dt>Best survival</dt><dd id="result-best">00:00</dd></div>
+            <div><dt>Highest phase</dt><dd id="result-phase">—</dd></div>
+            <div><dt>Successful cultures</dt><dd id="result-wins">0</dd></div>
+          </dl>
+          <div class="dialog-actions"><button class="primary" type="button" data-action="start">Begin new culture <span aria-hidden="true">↗</span></button><button class="menu-action" type="button" data-action="title">Title screen <span aria-hidden="true">↖</span></button></div>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
