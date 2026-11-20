@@ -2,6 +2,8 @@
 
 A browser survival game set in a microscopic culture dish. Absorb nutrients, grow physical branches, adapt into one of three lineages, and destroy the Crown colony. A successful culture is paced for roughly 10–15 minutes.
 
+[Play MICROGENESIS online](https://dev-stack-cloud.github.io/microgenesis/)
+
 ## Play locally
 
 Install Node.js 22.13 or newer, then run from this directory.
@@ -12,6 +14,8 @@ npm run dev
 ```
 
 Open the local address printed by Vite. To serve a production build, run `npm run build` followed by `npm run preview`. The game needs WebGL and a current desktop or mobile browser. Textures and sound are generated locally. Fonts ship with their Open Font Licenses in `public/fonts`.
+
+The GitHub Pages workflow builds and publishes `dist/` on pushes to `main`. The Pages publishing source is **GitHub Actions**.
 
 ## Controls
 
